@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Mic,
   MicOff,
@@ -266,9 +267,9 @@ export function VoiceChat({ matchId, username, onParticipantCountChange, classNa
 
   // Setup Modal - shown before joining
   const SetupModal = () => {
-    if (!showSetupModal) return null;
+    if (!showSetupModal || typeof document === 'undefined') return null;
 
-    return (
+    return createPortal(
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
         <div className="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl overflow-hidden w-full max-w-md mx-4">
           {/* Header */}
@@ -380,15 +381,16 @@ export function VoiceChat({ matchId, username, onParticipantCountChange, classNa
             </Button>
           </div>
         </div>
-      </div>
+      </div>,
+      document.body
     );
   };
 
   // Connection Modal - shown when in the room
   const ConnectionModal = () => {
-    if (!showModal) return null;
+    if (!showModal || typeof document === 'undefined') return null;
 
-    return (
+    return createPortal(
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
         <div className="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl overflow-hidden w-full max-w-2xl mx-4 h-[500px] max-h-[80vh] flex flex-col">
           {/* Header */}
@@ -507,14 +509,15 @@ export function VoiceChat({ matchId, username, onParticipantCountChange, classNa
             )}
           </div>
         </div>
-      </div>
+      </div>,
+      document.body
     );
   };
 
   // Joined state - show inline controls with mic and speaker toggles
   if (isJoined && !showModal) {
     return (
-      <div className={cn("h-full", className)}>
+      <div className={cn(className || "h-full")}>
         <SetupModal />
         <ConnectionModal />
         <div className="h-full bg-violet-500/10 border border-violet-500/30 rounded-2xl overflow-hidden flex flex-col">
@@ -584,7 +587,7 @@ export function VoiceChat({ matchId, username, onParticipantCountChange, classNa
 
   // Not joined state - purple box with join button
   return (
-    <div className={cn("h-full", className)}>
+    <div className={cn(className || "h-full")}>
       <SetupModal />
       <ConnectionModal />
       <div className="h-full bg-violet-500/10 border border-violet-500/30 rounded-2xl flex flex-col items-center justify-center p-3">

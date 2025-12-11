@@ -323,6 +323,7 @@ export default function MatchPage() {
             onParticipantCountChange={(count) => {
               console.log('Participants in voice:', count);
             }}
+            className="h-36"
           />
         </div>
       </div>
