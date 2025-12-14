@@ -69,7 +69,7 @@ export function GuildNav() {
   ];
 
   return (
-    <nav className="hidden lg:flex w-56 bg-gray-900 border-r border-gray-800 p-4 flex-col gap-1">
+    <nav className="hidden lg:flex w-56 bg-gray-900 border-r border-gray-800 p-4 flex-col gap-1 max-h-screen overflow-y-auto sticky top-0">
       {navItems.map((item) => (
         <NavItem
           key={item.href}
